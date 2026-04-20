@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{41f2cff4-24db-44e6-9172-46b90461e21d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Core">
+      <UniqueIdentifier>{5c1274f5-c6d4-4b1b-ace5-34378eee50b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Components">
+      <UniqueIdentifier>{0131e41d-7f7f-4b85-b017-ca2f3cc227f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Game">
+      <UniqueIdentifier>{36c83fed-0d74-4e78-bc57-bbdfacdfb5fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\States">
+      <UniqueIdentifier>{e5094d7c-f99b-4a0f-8e33-d0e2c3a03053}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\JSON Files">
+      <UniqueIdentifier>{09c9eed3-de04-4998-a88e-c7e939306717}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\EventManager.cpp">
+      <Filter>src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Game.cpp">
+      <Filter>src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\GameObject.cpp">
+      <Filter>src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\StateMachine.cpp">
+      <Filter>src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\GameObjectManager.cpp">
+      <Filter>src\Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Core\Component.h">
+      <Filter>src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Event.h">
+      <Filter>src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\EventManager.h">
+      <Filter>src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Game.h">
+      <Filter>src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\GameObject.h">
+      <Filter>src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\TankControllerComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\TankRendererComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\TransformComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\GameEvents.h">
+      <Filter>src\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\StateMachine.h">
+      <Filter>src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\State.h">
+      <Filter>src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\GameObjectManager.h">
+      <Filter>src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\MeshRendererComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\AABBColliderComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\ProjectileMovementComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\States\EnemyStates.h">
+      <Filter>src\States</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PlayerTank.json">
+      <Filter>src\JSON Files</Filter>
+    </None>
+    <None Include="EnemyTank.json">
+      <Filter>src\JSON Files</Filter>
+    </None>
+    <None Include="PlasmaBullet.json">
+      <Filter>src\JSON Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

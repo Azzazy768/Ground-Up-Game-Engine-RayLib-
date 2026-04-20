@@ -1,0 +1,27 @@
+{
+  "Name": "Player Tank",
+  "Components": [
+    {
+      "Type": "TransformComponent",
+      "Position": [ 3.0, 0.0, 0.0 ],
+      "Rotation": [ 0.0, 0.0, 0.0 ],
+      "Scale": [ 1.0, 1.0, 1.0 ]
+    },
+    {
+      "Type": "AABBColliderComponent"
+    },
+    {
+      "Type": "MeshRendererComponent",
+      "Shape": "Cube",
+      "Width": 2.0,
+      "Height": 1.0,
+      "Length": 3.0,
+      "Color": [ 0, 255, 255, 255 ]
+    },
+    {
+      "Type": "TankControllerComponent",
+      "MoveSpeed": 10.0,
+      "TurnSpeed": 5.0
+    }
+  ]
+}
