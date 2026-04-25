@@ -10,6 +10,7 @@
 #include "../Core/GameObjectManager.h"
 #include "../Core/StateMachine.h"
 #include "../States/EnemyStates.h"
+#include "../AINavigationComponent.h"
 #include <iostream>
 
 GameObject* playerTankPointer;
@@ -45,6 +46,7 @@ void Game::Initialize() {
 	GameObjectManager::Instance().RegisterComponentFactory("AABBColliderComponent", AABBColliderComponent::CreateComponent);
 	GameObjectManager::Instance().RegisterComponentFactory("ProjectileMovementComponent", ProjectileMovementComponent::CreateComponent);
 	GameObjectManager::Instance().RegisterComponentFactory("StateMachineComponent", StateMachine::CreateComponent);
+	GameObjectManager::Instance().RegisterComponentFactory("AINavigationComponent", AINavigationComponent::CreateComponent);
 
 	//Adding states to state factory so that the json can read it and create states it needs for the fsm
 	StateMachine::RegisterStateFactory("EnemyAliveState", EnemyAliveState::CreateState);

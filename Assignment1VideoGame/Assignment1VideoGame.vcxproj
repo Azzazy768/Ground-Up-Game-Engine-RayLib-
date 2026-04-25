@@ -131,6 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NavigationGraph.cpp" />
     <ClCompile Include="src\Core\EventManager.cpp" />
     <ClCompile Include="src\Core\Game.cpp" />
     <ClCompile Include="src\Core\GameObject.cpp" />
@@ -138,6 +139,8 @@
     <ClCompile Include="src\Core\StateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AINavigationComponent.h" />
+    <ClInclude Include="NavigationGraph.h" />
     <ClInclude Include="src\Components\AABBColliderComponent.h" />
     <ClInclude Include="src\Components\MeshRendererComponent.h" />
     <ClInclude Include="src\Components\ProjectileMovementComponent.h" />
