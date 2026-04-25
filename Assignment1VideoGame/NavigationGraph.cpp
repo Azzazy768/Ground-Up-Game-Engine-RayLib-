@@ -2,6 +2,23 @@
 #include <algorithm>
 #include <cmath>
 
+
+NavigationGraph::NavigationGraph(int gridWidth, int gridHeight, float cellSize) {
+	width = gridWidth;
+	height = gridHeight;
+	cellSize = cellSize;
+
+	grid.resize(width); //resizing array to be the amount of indexes as needed
+
+	for (int x = 0; x < width; ++x) {
+		grid[x].resize(height);
+		for (int y = 0; y < height; ++y) {
+			Vector3 worldPos = { x * cellSize, 0.0f, y * cellSize }; //convert from world pos to grid pos
+			grid[x][y] = new PathNode(worldPos, x, y);
+		}
+	}
+}
+
 std::vector<PathNode*> NavigationGraph::FindPath(Vector3 startPos, Vector3 targetPos) {
 	
 	for (int x = 0; x < width; x++) { //Reseting all nodes
@@ -116,3 +133,29 @@ std::vector<PathNode*> NavigationGraph::GetNeighbors(PathNode* node) {
 	return neighbors;
 }	
 
+void NavigationGraph::SetStaticObstacle(int x, int y, bool isObstacle) { 
+	if (x >= 0 && x < width && y >= 0 && y < height) { //Check that the x and y are inside the grid
+		grid[x][y]->isStaticObstacle = isObstacle; //set the position in the grid to be an obstacle depending on the boolean that was entered
+	}
+}
+
+PathNode* NavigationGraph::GetNodeFromWorldPosition(Vector3 worldPos) {
+	int gridX = static_cast<int>(std::round(worldPos.x / cellSize)); //Get the grid x and y by diving the world position by the cell size  and round it manually 
+	int gridY = static_cast<int>(std::round(worldPos.z / cellSize));
+
+
+	if (gridX < 0) { //Make it so that if the grid x or y values goes outside of the play area, return it to a proper value to stop crashes
+		gridX = 0;
+	} 
+	if (gridX >= width) {
+		gridX = width - 1;
+	}
+	if (gridY < 0) {
+		gridY = 0;
+	}
+	if (gridY >= height) {
+		gridY = height - 1;
+	}
+
+	return grid[gridX][gridY];
+}

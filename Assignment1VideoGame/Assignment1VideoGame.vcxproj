@@ -140,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AINavigationComponent.h" />
+    <ClInclude Include="LevelLoader.h" />
     <ClInclude Include="NavigationGraph.h" />
     <ClInclude Include="src\Components\AABBColliderComponent.h" />
     <ClInclude Include="src\Components\MeshRendererComponent.h" />
@@ -159,9 +160,11 @@
     <ClInclude Include="src\States\EnemyStates.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Level.json" />
     <None Include="PlasmaBullet.json" />
     <None Include="EnemyTank.json" />
     <None Include="PlayerTank.json" />
+    <None Include="Wall.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

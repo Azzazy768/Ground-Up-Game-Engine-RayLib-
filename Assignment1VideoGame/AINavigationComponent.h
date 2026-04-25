@@ -13,7 +13,6 @@ private:
 	float moveSpeed = 10.0f;
 public:
 	AINavigationComponent(GameObject* owner) : Component(owner) {}
-	static Component* CreateComponent(void* pData, GameObject* pOwner);
 	void SetNavigationGraph(NavigationGraph* graph) { navGraph = graph; }
 
 	void CalculatePathTo(Vector3 targetWorldPos) { //Gets current world position, and calls the find path function to get the path needed to target

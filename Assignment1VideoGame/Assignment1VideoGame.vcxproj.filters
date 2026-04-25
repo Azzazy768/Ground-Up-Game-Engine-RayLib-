@@ -113,6 +113,9 @@
     <ClInclude Include="AINavigationComponent.h">
       <Filter>src\Components</Filter>
     </ClInclude>
+    <ClInclude Include="LevelLoader.h">
+      <Filter>src\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="PlayerTank.json">
@@ -122,6 +125,12 @@
       <Filter>src\JSON Files</Filter>
     </None>
     <None Include="PlasmaBullet.json">
+      <Filter>src\JSON Files</Filter>
+    </None>
+    <None Include="Level.json">
+      <Filter>src\JSON Files</Filter>
+    </None>
+    <None Include="Wall.json">
       <Filter>src\JSON Files</Filter>
     </None>
   </ItemGroup>

@@ -1,0 +1,22 @@
+{
+  "Name": "Wall",
+  "Components": [
+    {
+      "Type": "TransformComponent",
+      "Position": [ 0.0, 0.0, 0.0 ],
+      "Rotation": [ 0.0, 0.0, 0.0 ],
+      "Scale": [ 1.0, 1.0, 1.0 ]
+    },
+    {
+      "Type": "AABBColliderComponent"
+    },
+    {
+      "Type": "MeshRendererComponent",
+      "Shape": "Cube",
+      "Width": 4.0,
+      "Height": 4.0,
+      "Length": 4.0,
+      "Color": [ 128, 128, 128, 255 ]
+    }
+  ]
+}

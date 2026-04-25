@@ -12,10 +12,12 @@
 #include "../States/EnemyStates.h"
 #include "../AINavigationComponent.h"
 #include <iostream>
+#include "../LevelLoader.h"
 
 GameObject* playerTankPointer;
 GameObject* enemyTankPointer;
 GameObject* bulletPointer;
+NavigationGraph* levelGraph = nullptr;
 
 void OnWeaponFired(const Event& event) {
 	const WeaponFiredEvent& weaponEvent = (const WeaponFiredEvent&)event;
@@ -34,8 +36,8 @@ Game::~Game(){
 }
 
 void Game::Initialize() {
-	camera.position = { 0.0f,10.0f,10.0f };
-	camera.target = { 0,0,0 };
+	camera.position = { 32.0f, 70.0f, 80.0f };
+	camera.target = { 32.0f, 0.0f, 32.0f }; 
 	camera.projection = CAMERA_PERSPECTIVE;
 	camera.up = { 0.0f, 1.0f, 0.0f };
 	camera.fovy = 45.0f; //The camera up and camera fov needed to be defined to display correctly (AI helped me debug this issue)
@@ -48,16 +50,19 @@ void Game::Initialize() {
 	GameObjectManager::Instance().RegisterComponentFactory("StateMachineComponent", StateMachine::CreateComponent);
 	GameObjectManager::Instance().RegisterComponentFactory("AINavigationComponent", AINavigationComponent::CreateComponent);
 
+	levelGraph = new NavigationGraph(16, 16, 4.0f);
+	LevelLoader loader = LevelLoader();
+	loader.LoadLevel("Level.json", levelGraph);
+
 	//Adding states to state factory so that the json can read it and create states it needs for the fsm
 	StateMachine::RegisterStateFactory("EnemyAliveState", EnemyAliveState::CreateState);
 	StateMachine::RegisterStateFactory("EnemyDestroyedState", EnemyDestroyedState::CreateState);
 
 	EventManager::Instance().AddListener(EventType::WeaponFired, OnWeaponFired); //Registers the function i made above for the sphere check into our event manager
 
-	playerTankPointer = GameObjectManager::Instance().CreateGameObject("PlayerTank.json");
-	enemyTankPointer = GameObjectManager::Instance().CreateGameObject("EnemyTank.json");
-	bulletPointer = GameObjectManager::Instance().CreateGameObject("PlasmaBullet.json");
+	
 
+	
 
 }
 
@@ -74,7 +79,7 @@ void Game::Update(float deltaTime) {
 	GameObjectManager::Instance().Update(deltaTime);
 
 
-	std::vector<GameObject*> allObjects = GameObjectManager::Instance().gameObjects;
+	/*std::vector<GameObject*> allObjects = GameObjectManager::Instance().gameObjects;
 
 	AABBColliderComponent* enemyCollider = enemyTankPointer->GetComponent<AABBColliderComponent>();
 
@@ -89,7 +94,7 @@ void Game::Update(float deltaTime) {
 				EventManager::Instance().TriggerEvent(hitEvent);
 			}
 		}
-	}
+	}*/
 
 }
 
@@ -97,9 +102,12 @@ void Game::Render() {
 	BeginDrawing();
 	ClearBackground(DARKPURPLE);
 	BeginMode3D(camera);
-	
-	DrawGrid(20, 1.0f);
 
+
+	for (int i = 0; i <= 16; i++) {
+		DrawLine3D({ i * 4.0f, 0.0f, 0.0f }, { i * 4.0f, 0.0f, 64.0f }, LIGHTGRAY); // Vertical
+		DrawLine3D({ 0.0f, 0.0f, i * 4.0f }, { 64.0f, 0.0f, i * 4.0f }, LIGHTGRAY); // Horizontal
+	}
 
 
 	//Rendering all objects
