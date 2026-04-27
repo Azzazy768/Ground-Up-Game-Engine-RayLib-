@@ -26,9 +26,20 @@ public:
 
 	EnemyHitEvent(GameObject* hitEnemy) { //getting the enemy we just hit
 		enemy = hitEnemy;
+		enemy->isActive = false; //turn off the enemy that was hit
 	}
 
 	EventType GetType() const override {
 		return EventType::EnemyHit;
 	}
+};
+
+class GameOverEvent : public Event {
+public:
+	EventType GetType() const override { return EventType::GameOver; }
+};
+
+class GameWonEvent : public Event {
+public:
+	EventType GetType() const override { return EventType::GameWon; }
 };

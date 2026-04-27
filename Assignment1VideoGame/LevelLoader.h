@@ -40,6 +40,7 @@ public:
 				else if (currentCell == 2) {
 					GameObject* enemy = GameObjectManager::Instance().CreateGameObject("EnemyTank.json");
 					enemy->GetComponent<TransformComponent>()->position = { cellWorldPos.x, 0.5, cellWorldPos.z };
+					enemy->GetComponent<AINavigationComponent>()->SetNavigationGraph(navGraph); //giving the ai component the nav graph
 				}
 				else if (currentCell == 3) {
 					GameObject* player = GameObjectManager::Instance().CreateGameObject("PlayerTank.json");

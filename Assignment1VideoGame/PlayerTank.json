@@ -1,5 +1,5 @@
 {
-  "Name": "Player Tank",
+  "Name": "PlayerTank",
   "Components": [
     {
       "Type": "TransformComponent",

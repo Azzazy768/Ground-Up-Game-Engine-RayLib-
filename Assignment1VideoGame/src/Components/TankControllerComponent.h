@@ -8,6 +8,7 @@
 #include "json.hpp"
 #include "../Core/GameObjectManager.h"
 #include<iostream>
+#include "../Components/ProjectileMovementComponent.h"
 
 class TankControllerComponent : public Component {
 	TransformComponent* tankTransformation;
@@ -54,6 +55,7 @@ public:
 						bulletTransform->position = tankTransformation->position; //Setting the bullet's position to be the tanks.
 						bulletTransform->position.y += 0.6f; //Raising the bullet a small bit so it comes out of the turret, not the tank body
 						bulletTransform->rotation = tankTransformation->rotation; //Setting its rotation to be the same as the tanks
+						bullet->GetComponent<ProjectileMovementComponent>()->tankOwner = owner;
 					}
 					
 				}

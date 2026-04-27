@@ -1,5 +1,5 @@
 {
-  "Name": "Enemy Tank",
+  "Name": "EnemyTank",
   "Components": [
     {
       "Type": "TransformComponent",
@@ -24,14 +24,20 @@
       "States": [
         {
           "ID": 0,
-          "Name": "EnemyAliveState"
+          "Name": "EnemyChaseState"
         },
         {
           "ID": 1,
+          "Name": "EnemyAttackState"
+        },
+        {
+          "ID": 2,
           "Name": "EnemyDestroyedState"
         }
       ]
+    },
+    {
+      "Type": "AINavigationComponent"
     }
-   
   ]
 }

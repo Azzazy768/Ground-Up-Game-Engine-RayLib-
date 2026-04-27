@@ -1,6 +1,11 @@
 #pragma once
 
-enum class EventType { WeaponFired, EntityMoved, Collision,EnemyHit };
+enum class EventType { 
+    WeaponFired,
+    EnemyHit,   
+    GameOver,
+    GameWon
+};
 
 class Event {
 public:

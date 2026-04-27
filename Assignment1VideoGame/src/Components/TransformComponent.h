@@ -11,6 +11,7 @@ public:
     Vector3 rotation;
     Vector3 scale;
     Vector3 orginalPostion;
+    Vector3 previousPosition; //Used for physic collions
 
     TransformComponent() { //I'm setting the default position values for the creation of the transform component. Will happen when object is created etc. 
         position = { 0.0f, 0.0f, 0.0f };

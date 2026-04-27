@@ -24,6 +24,33 @@ void OnWeaponFired(const Event& event) {
 	std::cout << "PEW!" << std::endl;
 } 
 
+void CheckBulletCollisions() { //Loops through objects, finds bullets, loops through objects again and sees if theres collision between bullet and tank or wall. and does appropiate action.
+	std::vector<GameObject*> allObjects = GameObjectManager::Instance().gameObjects;
+	for (GameObject* currentObject : allObjects) {
+		if (currentObject->GetName() == "PlasmaBullet") {
+			if (currentObject->isActive == true) {
+				AABBColliderComponent* bulletCollider = currentObject->GetComponent<AABBColliderComponent>();
+				if(bulletCollider != nullptr){
+					for (GameObject* targetObject : allObjects) {
+						if ((targetObject->GetName() == "EnemyTank" || targetObject->GetName() == "PlayerTank") && targetObject != currentObject->GetComponent<ProjectileMovementComponent>()->tankOwner) {
+							if (bulletCollider->Intersects(targetObject->GetComponent<AABBColliderComponent>())) {
+								currentObject->isActive = false; //Turn off the bullet
+								EventManager::Instance().TriggerEvent(EnemyHitEvent{ targetObject }); //Trigger the enemy hit event, which will be listened to by the enemy alive state, which will then transition the enemy to its dead state.
+							}
+						}
+						else if (targetObject->GetName() == "Wall") {
+							if(bulletCollider->Intersects(targetObject->GetComponent<AABBColliderComponent>())) {
+								currentObject->isActive = false; //Turn off the bullet if it hits a wall as well
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
 
 
 Game::Game(int width, int height, std::string title) {
@@ -50,17 +77,17 @@ void Game::Initialize() {
 	GameObjectManager::Instance().RegisterComponentFactory("StateMachineComponent", StateMachine::CreateComponent);
 	GameObjectManager::Instance().RegisterComponentFactory("AINavigationComponent", AINavigationComponent::CreateComponent);
 
+	//Adding states to state factory so that the json can read it and create states it needs for the fsm
+	StateMachine::RegisterStateFactory("EnemyChaseState", EnemyChaseState::CreateState);
+	StateMachine::RegisterStateFactory("EnemyAttackState", EnemyAttackState::CreateState);
+	StateMachine::RegisterStateFactory("EnemyDestroyedState", EnemyDestroyedState::CreateState);
+	
+	EventManager::Instance().AddListener(EventType::WeaponFired, OnWeaponFired); //Registers the function i made above for the sphere check into our event manager
+
+	//Loading level
 	levelGraph = new NavigationGraph(16, 16, 4.0f);
 	LevelLoader loader = LevelLoader();
 	loader.LoadLevel("Level.json", levelGraph);
-
-	//Adding states to state factory so that the json can read it and create states it needs for the fsm
-	StateMachine::RegisterStateFactory("EnemyAliveState", EnemyAliveState::CreateState);
-	StateMachine::RegisterStateFactory("EnemyDestroyedState", EnemyDestroyedState::CreateState);
-
-	EventManager::Instance().AddListener(EventType::WeaponFired, OnWeaponFired); //Registers the function i made above for the sphere check into our event manager
-
-	
 
 	
 
@@ -76,26 +103,56 @@ void Game::Run() {
 }
 
 void Game::Update(float deltaTime) {
+	std::vector<GameObject*> allObjects = GameObjectManager::Instance().gameObjects;
+
+	//Saves old positions before movement
+	for (GameObject* obj : allObjects) {
+		TransformComponent* transform = obj->GetComponent<TransformComponent>();
+		if (transform != nullptr) {
+			transform->previousPosition = transform->position;
+		}
+	}
+
+	//Update all objects
 	GameObjectManager::Instance().Update(deltaTime);
 
-
-	/*std::vector<GameObject*> allObjects = GameObjectManager::Instance().gameObjects;
-
-	AABBColliderComponent* enemyCollider = enemyTankPointer->GetComponent<AABBColliderComponent>();
-
+	//Update colliders (NEEDED TO ADD THIS TO STOP GETTING STUCK ON WALLS)
 	for (GameObject* obj : allObjects) {
-		if (obj->isActive && obj->GetComponent<ProjectileMovementComponent>() != nullptr) {
+		AABBColliderComponent* collider = obj->GetComponent<AABBColliderComponent>();
+		if (collider != nullptr && collider->isActive) {
+			collider->Update(0.0f);
+		}
+	}
 
-			AABBColliderComponent* bulletCollider = obj->GetComponent<AABBColliderComponent>();
 
-			if (bulletCollider != nullptr && enemyCollider != nullptr && bulletCollider->Intersects(enemyCollider)) {
-				obj->isActive = false;
-				EnemyHitEvent hitEvent(enemyTankPointer);
-				EventManager::Instance().TriggerEvent(hitEvent);
+	//Check if any object has collided with wall.
+	for (GameObject* obj : allObjects) {
+		if (obj->GetName() == "PlayerTank" || obj->GetName() == "EnemyTank") {
+
+			AABBColliderComponent* objCollider = obj->GetComponent<AABBColliderComponent>();
+			TransformComponent* objTransform = obj->GetComponent<TransformComponent>();
+
+			if (objCollider == nullptr || !objCollider->isActive) continue;
+
+			for (GameObject* wall : allObjects) {
+				if (wall->GetName() == "Wall") {
+					AABBColliderComponent* wallCollider = wall->GetComponent<AABBColliderComponent>();
+
+					// If the tank walked into a wall, push it back to its old position
+					if (wallCollider != nullptr && objCollider->Intersects(wallCollider)) {
+						objTransform->position = objTransform->previousPosition;
+					
+					}
+				}
 			}
 		}
-	}*/
+	}
 
+	CheckBulletCollisions();
+
+
+
+	 
 }
 
 void Game::Render() {
@@ -120,3 +177,20 @@ void Game::Render() {
 void Game::Shutdown() {
 	CloseWindow();
 }
+
+/*std::vector<GameObject*> allObjects = GameObjectManager::Instance().gameObjects;
+
+	AABBColliderComponent* enemyCollider = enemyTankPointer->GetComponent<AABBColliderComponent>();
+
+	for (GameObject* obj : allObjects) {
+		if (obj->isActive && obj->GetComponent<ProjectileMovementComponent>() != nullptr) {
+
+			AABBColliderComponent* bulletCollider = obj->GetComponent<AABBColliderComponent>();
+
+			if (bulletCollider != nullptr && enemyCollider != nullptr && bulletCollider->Intersects(enemyCollider)) {
+				obj->isActive = false;
+				EnemyHitEvent hitEvent(enemyTankPointer);
+				EventManager::Instance().TriggerEvent(hitEvent);
+			}
+		}
+	}*/

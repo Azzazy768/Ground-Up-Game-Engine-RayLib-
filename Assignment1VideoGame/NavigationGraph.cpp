@@ -6,7 +6,7 @@
 NavigationGraph::NavigationGraph(int gridWidth, int gridHeight, float cellSize) {
 	width = gridWidth;
 	height = gridHeight;
-	cellSize = cellSize;
+	this->cellSize = cellSize;
 
 	grid.resize(width); //resizing array to be the amount of indexes as needed
 
@@ -64,7 +64,7 @@ std::vector<PathNode*> NavigationGraph::FindPath(Vector3 startPos, Vector3 targe
 		std::vector<PathNode*> neighbors = GetNeighbors(lowestNode);
 		for(PathNode* neighbor : neighbors){
 			if (neighbor->inClosedList || !neighbor->IsPassable()) {
-				break;
+				continue;
 			}
 			else {
 				float moveCostToNeighbor = lowestNode->gCost + Vector3Distance(lowestNode->position, neighbor->position);
@@ -85,19 +85,20 @@ std::vector<PathNode*> NavigationGraph::FindPath(Vector3 startPos, Vector3 targe
 			}
 		}
 
-		std::vector<PathNode*> path;
-		if (targetNode->parent != nullptr || targetNode == startNode) {
-			PathNode* currentNode = targetNode;
-			while(currentNode != nullptr) { //Following the parents backwards and putting them inside the path list
-				path.push_back(currentNode);
-				currentNode = currentNode->parent;
-			}
-
-			std::reverse(path.begin(), path.end()); //Reverseing the path so we go from start -> finish instead of finish -> start
-		}
-		return path;
+		
 
 	}
+	std::vector<PathNode*> path;
+	if (targetNode->parent != nullptr || targetNode == startNode) {
+		PathNode* currentNode = targetNode;
+		while (currentNode != nullptr) { //Following the parents backwards and putting them inside the path list
+			path.push_back(currentNode);
+			currentNode = currentNode->parent;
+		}
+
+		std::reverse(path.begin(), path.end()); //Reverseing the path so we go from start -> finish instead of finish -> start
+	}
+	return path;
 }
 
 float NavigationGraph::CalculateHeuristic(PathNode* a, PathNode* b) {

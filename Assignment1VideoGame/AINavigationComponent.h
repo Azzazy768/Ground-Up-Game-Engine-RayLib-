@@ -12,6 +12,7 @@ private:
 	int currentWaypointIndex = 0;
 	float moveSpeed = 10.0f;
 public:
+
 	AINavigationComponent(GameObject* owner) : Component(owner) {}
 	void SetNavigationGraph(NavigationGraph* graph) { navGraph = graph; }
 
@@ -20,7 +21,8 @@ public:
 			TransformComponent* transform = owner->GetComponent<TransformComponent>();
 			Vector3 currentWorldPos = transform->position;
 			currentPath = navGraph->FindPath(currentWorldPos, targetWorldPos);
-			currentWaypointIndex = 0;
+			currentWaypointIndex = 1;
+			std::cout << "Path calculated, nodes: " << currentPath.size() << std::endl;
 		}
 		else { return; }
 	}
@@ -33,11 +35,12 @@ public:
 		Vector3 currentPosition = transform->position;
 		Vector3 targetPosition = currentPath[currentWaypointIndex]->position;
 
+		targetPosition.y = currentPosition.y;
 		Vector3 dir = Vector3Normalize(Vector3Subtract(targetPosition, currentPosition));
 		Vector3 newPos = Vector3Add(currentPosition, Vector3Scale(dir, moveSpeed * deltaTime));
 		transform->position = newPos;
 
-		if(Vector3Distance(currentPosition,targetPosition) < 0.1f){
+		if(Vector3Distance(currentPosition,targetPosition) < 0.5){
 			
 			transform->position = targetPosition; //Snapping so that floating point drift is avoided
 			currentWaypointIndex++; 

@@ -10,6 +10,7 @@ public:
 	float velocity = 0.0f;
 	float currentLife = 0.0f;
 	float lifetime = 0.0f;
+	GameObject* tankOwner = nullptr; //Who shot the projectile
 
 	ProjectileMovementComponent(GameObject* owner) : Component(owner) {}
 	~ProjectileMovementComponent() override = default;
