@@ -13,16 +13,23 @@
 #include "../AINavigationComponent.h"
 #include <iostream>
 #include "../LevelLoader.h"
+#include "../PlayerStates.h"
 
 GameObject* playerTankPointer;
 GameObject* enemyTankPointer;
 GameObject* bulletPointer;
 NavigationGraph* levelGraph = nullptr;
 
+
+
+int enemyCount = 0; //used to keep track of the enemy count
+bool playerWon = false;
+
 void OnWeaponFired(const Event& event) {
 	const WeaponFiredEvent& weaponEvent = (const WeaponFiredEvent&)event;
 	std::cout << "PEW!" << std::endl;
 } 
+
 
 void CheckBulletCollisions() { //Loops through objects, finds bullets, loops through objects again and sees if theres collision between bullet and tank or wall. and does appropiate action.
 	std::vector<GameObject*> allObjects = GameObjectManager::Instance().gameObjects;
@@ -32,12 +39,15 @@ void CheckBulletCollisions() { //Loops through objects, finds bullets, loops thr
 				AABBColliderComponent* bulletCollider = currentObject->GetComponent<AABBColliderComponent>();
 				if(bulletCollider != nullptr){
 					for (GameObject* targetObject : allObjects) {
-						if ((targetObject->GetName() == "EnemyTank" || targetObject->GetName() == "PlayerTank") && targetObject != currentObject->GetComponent<ProjectileMovementComponent>()->tankOwner) {
+						if ((targetObject->GetName() == "EnemyTank" || targetObject->GetName()=="PlayerTank") && targetObject != currentObject->GetComponent<ProjectileMovementComponent>()->tankOwner) {
 							if (bulletCollider->Intersects(targetObject->GetComponent<AABBColliderComponent>())) {
 								currentObject->isActive = false; //Turn off the bullet
 								EventManager::Instance().TriggerEvent(EnemyHitEvent{ targetObject }); //Trigger the enemy hit event, which will be listened to by the enemy alive state, which will then transition the enemy to its dead state.
+								enemyCount--; //Lower the enemy count for win condition tracking
 							}
 						}
+
+
 						else if (targetObject->GetName() == "Wall") {
 							if(bulletCollider->Intersects(targetObject->GetComponent<AABBColliderComponent>())) {
 								currentObject->isActive = false; //Turn off the bullet if it hits a wall as well
@@ -49,6 +59,17 @@ void CheckBulletCollisions() { //Loops through objects, finds bullets, loops thr
 		}
 	}
 }
+
+
+
+void CheckWinCondition() {
+	if (enemyCount <= 0 && !playerWon) {
+		playerWon = true;
+		EventManager::Instance().TriggerEvent(GameWonEvent{}); //Triggering the game won event
+	}
+}
+
+/////////////////////////////// GAME LOOP STARTS HERE ///////////////////////////////
 
 
 
@@ -81,13 +102,23 @@ void Game::Initialize() {
 	StateMachine::RegisterStateFactory("EnemyChaseState", EnemyChaseState::CreateState);
 	StateMachine::RegisterStateFactory("EnemyAttackState", EnemyAttackState::CreateState);
 	StateMachine::RegisterStateFactory("EnemyDestroyedState", EnemyDestroyedState::CreateState);
-	
+	StateMachine::RegisterStateFactory("PlayerAliveState", PlayerAliveState::CreateState);
+	StateMachine::RegisterStateFactory("PlayerDeadState", PlayerDeadState::CreateState);
+	StateMachine::RegisterStateFactory("PlayerWinnerState", PlayerWinnerState::CreateState);	
+
 	EventManager::Instance().AddListener(EventType::WeaponFired, OnWeaponFired); //Registers the function i made above for the sphere check into our event manager
 
 	//Loading level
 	levelGraph = new NavigationGraph(16, 16, 4.0f);
 	LevelLoader loader = LevelLoader();
 	loader.LoadLevel("Level.json", levelGraph);
+
+	//Getting enemy count for win event tracking
+	for (GameObject* obj : GameObjectManager::Instance().gameObjects) {
+		if (obj->GetName() == "EnemyTank") {
+			enemyCount++;
+		}
+	}
 
 	
 
@@ -149,6 +180,7 @@ void Game::Update(float deltaTime) {
 	}
 
 	CheckBulletCollisions();
+	CheckWinCondition();
 
 
 

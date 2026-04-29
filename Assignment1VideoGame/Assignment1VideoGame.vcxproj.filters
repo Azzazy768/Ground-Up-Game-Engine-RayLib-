@@ -57,6 +57,9 @@
     <ClCompile Include="NavigationGraph.cpp">
       <Filter>src\AI</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerStates.h">
+      <Filter>src\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Component.h">

@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NavigationGraph.cpp" />
+    <ClCompile Include="PlayerStates.h" />
     <ClCompile Include="src\Core\EventManager.cpp" />
     <ClCompile Include="src\Core\Game.cpp" />
     <ClCompile Include="src\Core\GameObject.cpp" />

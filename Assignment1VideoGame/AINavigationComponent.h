@@ -11,8 +11,9 @@ private:
 	std::vector<PathNode*> currentPath;
 	int currentWaypointIndex = 0;
 	float moveSpeed = 10.0f;
-public:
 
+public:
+	bool isActive = true;
 	AINavigationComponent(GameObject* owner) : Component(owner) {}
 	void SetNavigationGraph(NavigationGraph* graph) { navGraph = graph; }
 
@@ -22,11 +23,13 @@ public:
 			Vector3 currentWorldPos = transform->position;
 			currentPath = navGraph->FindPath(currentWorldPos, targetWorldPos);
 			currentWaypointIndex = 1;
-			std::cout << "Path calculated, nodes: " << currentPath.size() << std::endl;
 		}
 		else { return; }
 	}
 	void Update(float deltaTime) override {
+		if(isActive == false){
+			return;
+		}
 		if (currentPath.empty() || currentWaypointIndex >= currentPath.size()) {
 			return;
 		}

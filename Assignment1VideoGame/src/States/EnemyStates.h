@@ -11,7 +11,6 @@ enum EnemyStates {
 	CHASE = 0,
 	ATTACK = 1,
 	DEAD = 2,
-	ALIVE = 3,
 };
 
 
@@ -21,7 +20,7 @@ GameObject* GetClosestAliveTank(Vector3 myPos, GameObject* currentGameObj) {
 
 
 	for (GameObject* targetObj : GameObjectManager::Instance().gameObjects) {
-		if (targetObj != currentGameObj && (targetObj->GetName() == "EnemyTank" || targetObj->GetName() == "PlayerTank") && targetObj->isActive) { //Gets the type and filters out walls and bullets
+		if (targetObj != currentGameObj && (targetObj->GetName() == "EnemyTank" || targetObj->GetName() == "PlayerTank") && targetObj->GetComponent<AABBColliderComponent>()->isActive == true) { //Gets the type and filters out walls and bullets
 			TransformComponent* targetObjTransform = targetObj->GetComponent<TransformComponent>(); //Gets the world position of the target object
 			if (targetObjTransform != nullptr) {
 				float distance = Vector3Distance(myPos, targetObjTransform->position); //gets the difference between the currentObject and the target obj its calculating
@@ -41,26 +40,6 @@ GameObject* GetClosestAliveTank(Vector3 myPos, GameObject* currentGameObj) {
 
 	return closestTank;
 }
-
-class EnemyAliveState :public State {
-
-	void Enter() {
-		EventManager::Instance().AddListener(EventType::EnemyHit, [this](const Event& event) { //When a enemy tank is made and is entered in alive, it registers into the event system a hitEvent. I  was unsure where to implement the registration of the event. So i decided here is best.
-			const EnemyHitEvent& hitEvent = (const EnemyHitEvent&)event;
-			if (hitEvent.enemy == this->owner) {
-				std::cout << "Enemy Hit!";
-				owner->GetComponent<StateMachine>()->GoToState(DEAD); 
-			}
-			});
-	}
-	void Update(float deltaTime) {
-	}
-	void Exit() {}
-
-
-
-
-};
 
 
 class EnemyChaseState : public State {
@@ -174,6 +153,8 @@ public:
 		AABBColliderComponent* collider = owner->GetComponent<AABBColliderComponent>();
 		collider->isActive = false;
 
+		AINavigationComponent* navComponent = owner->GetComponent<AINavigationComponent>();
+		navComponent->isActive = false;
 
 		MeshRendererComponent* renderer = owner->GetComponent<MeshRendererComponent>();
 		renderer->color = DARKGRAY;

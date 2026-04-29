@@ -64,7 +64,7 @@ public:
 		}
 
 
-		DrawBoundingBox(BoundingBox{ minBounds,maxBounds }, GREEN); //Drawing a temporary box that shows us the collision box
+		
 	}
 
 	bool Intersects(const AABBColliderComponent* other) const {

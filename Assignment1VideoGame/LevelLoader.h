@@ -13,6 +13,7 @@
 class LevelLoader {
 public:
 	void LoadLevel(const std::string& filename, NavigationGraph* navGraph) {
+
         std::ifstream file(filename); //Opening the file using c++ file reading library
         if (!file.is_open()) {
             std::cout << "Could not load level" << filename << std::endl;

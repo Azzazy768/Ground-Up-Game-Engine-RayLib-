@@ -22,6 +22,24 @@
       "Type": "TankControllerComponent",
       "MoveSpeed": 10.0,
       "TurnSpeed": 5.0
+    },
+    {
+      "Type": "StateMachineComponent",
+      "InitialState": 0,
+      "States": [
+        {
+          "ID": 0,
+          "Name": "PlayerAliveState"
+        },
+        {
+          "ID": 1,
+          "Name": "PlayerDeadState"
+        },
+        {
+          "ID": 2,
+          "Name": "PlayerWinnerState"
+        }
+      ]
     }
   ]
 }

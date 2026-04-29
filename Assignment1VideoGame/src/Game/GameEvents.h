@@ -1,6 +1,7 @@
 #pragma once
 #include "raylib.h"
 #include "../Core/Event.h"
+#include "../Core/StateMachine.h"
 
 
 class GameObject;
@@ -26,7 +27,6 @@ public:
 
 	EnemyHitEvent(GameObject* hitEnemy) { //getting the enemy we just hit
 		enemy = hitEnemy;
-		enemy->isActive = false; //turn off the enemy that was hit
 	}
 
 	EventType GetType() const override {
