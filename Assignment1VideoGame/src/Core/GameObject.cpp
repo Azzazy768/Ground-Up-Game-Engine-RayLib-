@@ -2,6 +2,7 @@
 
 GameObject::GameObject() {
 	isActive = true;
+	name = "EnemyTank";
 }
 
 GameObject::~GameObject() {  //Making a deconstructer for the objects so that i can avoid memory leaks after being done with any object 

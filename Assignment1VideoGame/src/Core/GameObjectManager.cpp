@@ -20,6 +20,7 @@ GameObject* GameObjectManager::CreateGameObject(const std::string& filePath) {
 	file >> j; //Parsing the json file data.
 
 	GameObject* newObject = new GameObject(); //Creating a blank/empty object
+	newObject->SetName(j["Name"]);
 	if (j.contains("Components") && j["Components"].is_array()) { //Checking if the json file has a components key, and if it has an array as a value
 		for (auto& componentData : j["Components"]) {
 			if (componentData.contains("Type")) {

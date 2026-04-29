@@ -31,6 +31,9 @@
     <Filter Include="src\JSON Files">
       <UniqueIdentifier>{09c9eed3-de04-4998-a88e-c7e939306717}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\AI">
+      <UniqueIdentifier>{be38d5d4-4e16-4764-bb5d-c94a295634ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -50,6 +53,12 @@
     </ClCompile>
     <ClCompile Include="src\Core\GameObjectManager.cpp">
       <Filter>src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="NavigationGraph.cpp">
+      <Filter>src\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerStates.h">
+      <Filter>src\States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -101,6 +110,15 @@
     <ClInclude Include="src\States\EnemyStates.h">
       <Filter>src\States</Filter>
     </ClInclude>
+    <ClInclude Include="NavigationGraph.h">
+      <Filter>src\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AINavigationComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelLoader.h">
+      <Filter>src\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="PlayerTank.json">
@@ -110,6 +128,12 @@
       <Filter>src\JSON Files</Filter>
     </None>
     <None Include="PlasmaBullet.json">
+      <Filter>src\JSON Files</Filter>
+    </None>
+    <None Include="Level.json">
+      <Filter>src\JSON Files</Filter>
+    </None>
+    <None Include="Wall.json">
       <Filter>src\JSON Files</Filter>
     </None>
   </ItemGroup>

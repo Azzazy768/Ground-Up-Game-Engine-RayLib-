@@ -6,6 +6,7 @@
 
 class GameObject {
     std::vector<Component*> components;
+    std::string name;
 
 public:
     bool isActive;
@@ -16,6 +17,9 @@ public:
     void Render();
 
     void AddComponent(Component* component);
+
+	std::string GetName() const { return name; }
+	void SetName(const std::string& newName) { name = newName; }
 
     // Helper to get components (Optional but recommended)
     template <typename T>

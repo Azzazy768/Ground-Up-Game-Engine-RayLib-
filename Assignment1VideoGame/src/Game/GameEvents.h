@@ -1,6 +1,7 @@
 #pragma once
 #include "raylib.h"
 #include "../Core/Event.h"
+#include "../Core/StateMachine.h"
 
 
 class GameObject;
@@ -31,4 +32,14 @@ public:
 	EventType GetType() const override {
 		return EventType::EnemyHit;
 	}
+};
+
+class GameOverEvent : public Event {
+public:
+	EventType GetType() const override { return EventType::GameOver; }
+};
+
+class GameWonEvent : public Event {
+public:
+	EventType GetType() const override { return EventType::GameWon; }
 };
